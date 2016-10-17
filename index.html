@@ -4,6 +4,7 @@
   </head>
   <body>
     <div id="map"></div>
+    <div id="info-box"></div>
     <script>
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -11,8 +12,17 @@
           scrollwheel: false,
           zoom: 14
         });
-        map.data.loadGeoJson('https://jmarinelli.github.io/jmarinelli.github.io/distrito_tecnologico.json');
-        map.data.loadGeoJson('https://jmarinelli.github.io/jmarinelli.github.io/empresas.json');
+        map.data.setStyle(function(feature) {
+          return ({
+            icon: "http://megaicons.net/static/img/icons_sizes/15/534/16/map-marker-push-pin-2-right-pink-icon.png"
+          });
+        });
+        map.data.addListener('mouseover', function(event) {
+          document.getElementById('info-box').textContent =
+              event.feature.getProperty('empresa');
+        });
+        map.data.loadGeoJson('https://raw.githubusercontent.com/jmarinelli/jmarinelli.github.io/master/distrito_tecnologico.json');
+        map.data.loadGeoJson('https://raw.githubusercontent.com/jmarinelli/jmarinelli.github.io/master/empresas.json');
       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd7AYQKQBep2hy4X4PE6dH8AWb1wlDWlA&callback=initMap"
